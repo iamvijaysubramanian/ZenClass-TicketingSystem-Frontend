@@ -12,6 +12,7 @@ function Login() {
       password: "",
     },
     onSubmit:async (values) => {
+      navigate("/portal/dashboard");
       try{
         const user = await axios.post(`${config.api}/user/login`,values);
         localStorage.setItem("myreact",user.data.token)
@@ -22,6 +23,7 @@ function Login() {
         alert(error.response.data.message);
       }
     },
+    
   });
      
   return (
