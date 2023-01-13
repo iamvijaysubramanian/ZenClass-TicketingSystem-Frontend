@@ -1,29 +1,32 @@
 import { useFormik } from "formik";
-import React from "react";
+import React,{useContext} from "react";
 import { useNavigate } from "react-router-dom";
-import {config}  from "./config";
-import axios from "axios";
+import { UserContext } from "./UserContext";
 
 function Login() {
+  const {setUser}= useContext(UserContext);
   const navigate = useNavigate();
-  const loginForm  = useFormik({
+  const loginForm = useFormik({
     initialValues: {
       email: "",
       password: "",
     },
-    onSubmit:async (values) => {
-      navigate("/portal/dashboard");
-      try{
-        const user = await axios.post(`${config.api}/user/login`,values);
-        localStorage.setItem("myreact",user.data.token)
-        if (user.data.message === "Success") {
-          navigate("/portal/dashboard");
-        }
-      } catch (error) {
-        alert(error.response.data.message);
-      }
-    },
-    
+    onSubmit: (values) => {
+      setUser({email : values.email})
+      navigate("/portal/dashboard")
+    // async (values) => {
+      // try {
+      //   const user = await axios.post(`${config.api}/user/login`,values);
+      //   localStorage.setItem("myreact",user.data.token)
+      //   if (user.data.message === "Success") {
+      //     navigate("/portal/dashboard");
+      //   }
+      // } catch (error) {
+      //   alert(error.response.data.message);
+      // }
+      
+    // },
+    }
   });
      
   return (
@@ -37,7 +40,7 @@ function Login() {
                 <div className="col-lg-6">
                   <div className="p-5">
                     <div className="text-center">
-                      <h1 className="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                      <h1 className="h4 text-gray-900 mb-4">Welcome!</h1>
                     </div>
                     <form onSubmit={loginForm.handleSubmit} className="user">
                       <div className="form-group">
